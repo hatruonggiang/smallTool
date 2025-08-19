@@ -451,6 +451,13 @@
                 width: 100%;
             }
         }
+
+        /* Animation cho nút hoàn thành */
+        @keyframes pulse {
+            0% { transform: scale(1); }
+            50% { transform: scale(1.05); }
+            100% { transform: scale(1); }
+        }
     </style>
 </head>
 <body>
@@ -686,6 +693,9 @@
                 });
 
                 this.updateNavigation();
+                
+                // Reset animation cho nút next
+                this.nextBtn.style.animation = '';
             }
 
             selectAnswer(answerIndex) {
@@ -698,6 +708,19 @@
                         option.classList.add('selected');
                     }
                 });
+
+                // Tự động chuyển sang câu tiếp theo sau 500ms
+                setTimeout(() => {
+                    if (this.currentQuestion < this.questions.length - 1) {
+                        this.currentQuestion++;
+                        this.displayQuestion();
+                        this.updateProgress();
+                    } else {
+                        // Nếu đây là câu cuối, hiển thị nút hoàn thành nổi bật
+                        this.nextBtn.textContent = '✅ Hoàn thành';
+                        this.nextBtn.style.animation = 'pulse 1s infinite';
+                    }
+                }, 500);
             }
 
             updateNavigation() {
